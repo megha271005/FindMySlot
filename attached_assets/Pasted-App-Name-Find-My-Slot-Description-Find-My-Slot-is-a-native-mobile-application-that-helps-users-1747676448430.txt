@@ -1,0 +1,83 @@
+App Name: Find My Slot
+
+Description:
+Find My Slot is a native mobile application that helps users find, book, and manage parking slots in real time. The app uses GPS to detect the user’s current location and shows available parking slots nearby. Slot availability is synced in real time from physical sensors to a backend database. Users can book slots weekly with fixed pricing per time block, pay online, receive notifications about slot availability, and manage their bookings via a dashboard. An admin interface allows managing slots, pricing, and monitoring sensor data.
+
+Functional Requirements:
+User Authentication
+
+Login and signup using phone number verification via OTP.
+
+Secure session management.
+
+Location & Maps
+
+On app launch, show user’s current GPS location on a map (Google Maps SDK or equivalent).
+
+Location permission is mandatory.
+
+Slot Availability & Booking
+
+Slot availability synced continuously from backend updated by physical sensors.
+
+Predefined slot durations: 30 minutes, 1 hour, and 2 hours.
+
+User can only book one slot at a time.
+
+Bookings last for 1 week starting from booking day.
+
+Fixed prices per time slot, charged weekly.
+
+Cancellation allowed with penalty deduction from weekly price.
+
+Payment Integration
+
+Online payment via Razorpay/Stripe/Paytm or similar gateway.
+
+Payment must be completed before booking confirmation.
+
+Notifications
+
+Notify users 5 minutes before a nearby slot is expected to become free.
+
+Other reminders about bookings and cancellations.
+
+User Dashboard
+
+Show current booking details, slot location, remaining booking time, payment history.
+
+Option to cancel current booking.
+
+Admin Panel
+
+Manage parking slots (add, update, delete).
+
+View real-time slot availability from sensors.
+
+Manage user bookings, cancellations, and payments.
+
+Adjust pricing and send notifications.
+
+Technical Requirements:
+Native mobile apps for Android (Kotlin/Java) and iOS (Swift).
+
+Backend API (Node.js/Django/Flask) with a database (PostgreSQL/MongoDB/Firebase).
+
+Google Maps SDK for location and map visualization.
+
+Payment gateway integration (Razorpay/Stripe/Paytm).
+
+Push notifications via Firebase Cloud Messaging (FCM).
+
+Authentication via Firebase Auth or Twilio OTP service.
+
+Requires permissions: location (foreground/background), notifications, internet, phone number (for OTP login).
+
+Additional Constraints:
+Single slot booking per user at any time.
+
+Weekly booking window enforced strictly.
+
+Slot availability data must reflect real-time sensor input.
+
+Cancellation penalty applied automatically.
