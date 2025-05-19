@@ -1,0 +1,56 @@
+/* Yacht Club Color Palette */
+:root {
+  --yacht-white: #F2F0EF;
+  --yacht-gray: #BBBDBC;
+  --yacht-teal: #245F73;
+  --yacht-brown: #733E24;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--yacht-white);
+  color: #333;
+}
+
+/* Custom Component Styling */
+.yacht-btn-primary {
+  background-color: var(--yacht-teal);
+  color: var(--yacht-white);
+  transition: all 0.2s ease;
+}
+
+.yacht-btn-primary:hover {
+  background-color: var(--yacht-teal);
+  opacity: 0.9;
+}
+
+.yacht-btn-secondary {
+  background-color: var(--yacht-brown);
+  color: var(--yacht-white);
+  transition: all 0.2s ease;
+}
+
+.yacht-btn-secondary:hover {
+  background-color: var(--yacht-brown);
+  opacity: 0.9;
+}
+
+/* Vehicle Type Tabs */
+.vehicle-type-tab {
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.vehicle-type-tab.active {
+  background-color: var(--yacht-teal);
+  color: var(--yacht-white);
+}
+
+.vehicle-type-tab:not(.active) {
+  background-color: var(--yacht-white);
+  color: var(--yacht-gray);
+  border: 1px solid var(--yacht-gray);
+}
