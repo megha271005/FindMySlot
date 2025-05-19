@@ -1,0 +1,185 @@
+{% extends "base.html" %}
+
+{% block title %}{{ location.name }} | Find My Slot{% endblock %}
+
+{% block content %}
+<div class="fixed inset-0 bg-yacht-white z-40">
+    <!-- Header -->
+    <div class="bg-yacht-teal text-yacht-white p-4 flex items-center">
+        <a href="{{ url_for('main.map') }}" class="mr-2">
+            <span class="material-icons">arrow_back</span>
+        </a>
+        <h1 class="text-lg font-semibold">Slot Details</h1>
+    </div>
+    
+    {% if location %}
+        <!-- Location Image -->
+        <div 
+            class="h-48 bg-yacht-gray" 
+            style="background-image: url('{{ location.image_url or '/static/img/default-parking.jpg' }}'); 
+                   background-size: cover; 
+                   background-position: center;">
+        </div>
+        
+        <!-- Location Information -->
+        <div class="p-4">
+            <div class="flex justify-between items-start mb-4">
+                <div>
+                    <h2 class="text-xl font-semibold text-yacht-teal">{{ location.name }}</h2>
+                    <p class="text-yacht-gray">{{ location.address }}</p>
+                </div>
+                
+                <div class="flex flex-col items-end gap-2">
+                    <div class="flex items-center">
+                        <div class="w-3 h-3 rounded-full mr-1 {% if available_slots > 0 %}bg-green-500{% else %}bg-red-500{% endif %}"></div>
+                        <span class="font-medium {% if available_slots > 0 %}text-green-500{% else %}text-red-500{% endif %}">
+                            {% if available_slots > 0 %}Available{% else %}Full{% endif %}
+                        </span>
+                    </div>
+                    
+                    <div class="bg-yacht-teal text-yacht-white text-sm px-2 py-1 rounded-md">
+                        {{ vehicle_type|capitalize }}
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flex items-center text-yacht-gray mb-6">
+                <!-- This would use actual distance calculation in a real app -->
+                <span class="material-icons text-sm mr-1">near_me</span>
+                <span class="text-sm">2.5 km away</span>
+                <span class="mx-2">•</span>
+                <span class="material-icons text-sm mr-1">access_time</span>
+                <span class="text-sm">
+                    50 min by walk
+                </span>
+            </div>
+            
+            <!-- Facility Details -->
+            <div class="bg-yacht-gray/20 rounded-xl p-4 mb-6">
+                <h3 class="font-medium mb-3 text-yacht-teal">Facilities</h3>
+                <div class="grid grid-cols-2 gap-3">
+                    {% if location.facilities %}
+                        {% for facility in location.facilities.split(',') %}
+                            <div class="flex items-center">
+                                <span class="material-icons text-yacht-teal mr-2">
+                                    {% if "Security" in facility %}security
+                                    {% elif "Lit" in facility %}light
+                                    {% elif "CCTV" in facility %}camera_alt
+                                    {% elif "EV" in facility %}electric_car
+                                    {% else %}check_circle
+                                    {% endif %}
+                                </span>
+                                <span class="text-sm">{{ facility }}</span>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="col-span-2 text-center text-yacht-gray">
+                            No facilities information available
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <!-- Booking Options -->
+            <h3 class="font-medium mb-3 text-yacht-teal">Select Booking Duration</h3>
+            <form action="{{ url_for('main.create_booking') }}" method="POST">
+                <input type="hidden" name="location_id" value="{{ location.id }}">
+                <input type="hidden" name="vehicle_type" value="{{ vehicle_type }}">
+                
+                <div class="grid grid-cols-3 gap-3 mb-6">
+                    {% for key, duration in durations.items() %}
+                        <label class="duration-option border rounded-lg p-3 text-center cursor-pointer duration-option"
+                               data-duration="{{ duration.minutes }}">
+                            <input type="radio" name="duration" value="{{ duration.minutes }}" 
+                                   class="hidden" {% if key == '1_hour' %}checked{% endif %}>
+                            <p class="font-medium">
+                                {% if key == '30_min' %}30 min
+                                {% elif key == '1_hour' %}1 hour
+                                {% elif key == '2_hours' %}2 hours
+                                {% endif %}
+                            </p>
+                            <p class="text-sm text-yacht-brown font-medium">
+                                ₹{{ (duration.price / 100)|float|round(2) }}
+                            </p>
+                        </label>
+                    {% endfor %}
+                </div>
+                
+                <button 
+                    type="submit"
+                    class="w-full bg-yacht-teal hover:bg-yacht-teal/90 text-yacht-white py-2 px-4 rounded-md font-medium {% if available_slots <= 0 %}opacity-50 cursor-not-allowed{% endif %}"
+                    {% if available_slots <= 0 %}disabled{% endif %}
+                >
+                    {% if available_slots <= 0 %}
+                        No Slots Available
+                    {% else %}
+                        Book for ₹{{ (durations['1_hour'].price / 100)|float|round(2) }}/week
+                    {% endif %}
+                </button>
+            </form>
+            
+            <p class="text-xs text-yacht-gray text-center mt-3">
+                Booking lasts for 1 week from today. Cancellation will incur penalty.
+            </p>
+        </div>
+    {% else %}
+        <div class="flex flex-col items-center justify-center h-[60vh]">
+            <div class="text-yacht-teal mb-4">
+                <span class="material-icons text-5xl">error_outline</span>
+            </div>
+            <h2 class="text-xl font-semibold text-yacht-teal mb-2">Location Not Found</h2>
+            <p class="text-yacht-gray mb-6">The parking location you're looking for doesn't exist.</p>
+            <a href="{{ url_for('main.map') }}" class="bg-yacht-teal text-yacht-white py-2 px-4 rounded-md">
+                Back to Map
+            </a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const durationOptions = document.querySelectorAll('.duration-option');
+        const priceDisplay = document.querySelector('button[type="submit"]');
+        
+        durationOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                // Update visual selection
+                durationOptions.forEach(opt => {
+                    opt.classList.remove('border-yacht-teal', 'bg-yacht-teal/10');
+                    opt.classList.add('border-yacht-gray');
+                });
+                
+                this.classList.remove('border-yacht-gray');
+                this.classList.add('border-yacht-teal', 'bg-yacht-teal/10');
+                
+                // Select the radio input
+                const radioInput = this.querySelector('input[type="radio"]');
+                radioInput.checked = true;
+                
+                // Update price display in button
+                const selectedDuration = this.dataset.duration;
+                let price = 0;
+                
+                {% for key, duration in durations.items() %}
+                if (selectedDuration == "{{ duration.minutes }}") {
+                    price = {{ (duration.price / 100)|float|round(2) }};
+                }
+                {% endfor %}
+                
+                if (priceDisplay && !priceDisplay.disabled) {
+                    priceDisplay.textContent = `Book for ₹${price}/week`;
+                }
+            });
+        });
+        
+        // Set initial selection
+        const initialSelected = document.querySelector('input[name="duration"]:checked');
+        if (initialSelected) {
+            initialSelected.parentElement.classList.remove('border-yacht-gray');
+            initialSelected.parentElement.classList.add('border-yacht-teal', 'bg-yacht-teal/10');
+        }
+    });
+</script>
+{% endblock %}

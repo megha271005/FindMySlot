@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block title %}Register | Find My Slot{% endblock %}
+
+{% block content %}
+<div class="fixed inset-0 bg-yacht-white z-50 flex flex-col items-center justify-center px-6">
+    <div class="w-full max-w-md">
+        <!-- Logo and Title -->
+        <div class="text-center mb-8">
+            <div class="inline-block bg-yacht-teal rounded-full p-4 mb-4 shadow-md">
+                <span class="material-icons text-yacht-white text-3xl">local_parking</span>
+            </div>
+            <h1 class="text-2xl font-bold text-yacht-teal mb-1">Find My Slot</h1>
+            <p class="text-yacht-gray">Find and book parking slots in real-time</p>
+        </div>
+        
+        <!-- Authentication Form -->
+        <div class="bg-white border border-yacht-teal/20 rounded-xl shadow-sm overflow-hidden">
+            <div class="p-0">
+                <div class="w-full">
+                    <div class="grid w-full grid-cols-2">
+                        <a href="{{ url_for('auth.login') }}" class="py-3 text-center font-medium text-yacht-gray">
+                            Login
+                        </a>
+                        <a href="{{ url_for('auth.register') }}" class="py-3 text-center font-medium bg-yacht-teal text-yacht-white">
+                            Register
+                        </a>
+                    </div>
+                    
+                    <div class="p-6">
+                        <form action="{{ url_for('auth.register') }}" method="POST">
+                            <div class="mb-4">
+                                <label for="email" class="block text-sm font-medium mb-2 text-yacht-teal">
+                                    Email
+                                </label>
+                                <input
+                                    type="email"
+                                    id="email"
+                                    name="email"
+                                    class="w-full px-3 py-2 border border-yacht-gray/30 rounded-md focus:outline-none focus:ring-2 focus:ring-yacht-teal"
+                                    placeholder="Enter your email"
+                                    required
+                                />
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label for="username" class="block text-sm font-medium mb-2 text-yacht-teal">
+                                    Username
+                                </label>
+                                <input
+                                    type="text"
+                                    id="username"
+                                    name="username"
+                                    class="w-full px-3 py-2 border border-yacht-gray/30 rounded-md focus:outline-none focus:ring-2 focus:ring-yacht-teal"
+                                    placeholder="Choose a username"
+                                    required
+                                />
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label for="password" class="block text-sm font-medium mb-2 text-yacht-teal">
+                                    Password
+                                </label>
+                                <input
+                                    type="password"
+                                    id="password"
+                                    name="password"
+                                    class="w-full px-3 py-2 border border-yacht-gray/30 rounded-md focus:outline-none focus:ring-2 focus:ring-yacht-teal"
+                                    placeholder="Create a password"
+                                    required
+                                />
+                            </div>
+                            
+                            <div class="mb-6">
+                                <label for="confirm_password" class="block text-sm font-medium mb-2 text-yacht-teal">
+                                    Confirm Password
+                                </label>
+                                <input
+                                    type="password"
+                                    id="confirm_password"
+                                    name="confirm_password"
+                                    class="w-full px-3 py-2 border border-yacht-gray/30 rounded-md focus:outline-none focus:ring-2 focus:ring-yacht-teal"
+                                    placeholder="Confirm your password"
+                                    required
+                                />
+                            </div>
+                            
+                            <button
+                                type="submit"
+                                class="w-full bg-yacht-teal hover:bg-yacht-teal/90 text-yacht-white py-2 px-4 rounded-md font-medium"
+                            >
+                                Create Account
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <p class="text-center text-sm text-yacht-gray mt-4">
+            By continuing, you agree to our
+            <a href="#" class="text-yacht-teal">Terms of Service</a> and
+            <a href="#" class="text-yacht-teal">Privacy Policy</a>
+        </p>
+    </div>
+</div>
+{% endblock %}

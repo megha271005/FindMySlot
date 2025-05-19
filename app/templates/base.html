@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Find My Slot | Parking Slot Finder{% endblock %}</title>
+    <meta name="description" content="Find and book parking slots in real-time with our smart parking app.">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/favicon.png') }}">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Google Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    
+    <!-- Tailwind CSS (via CDN for now) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'yacht-white': '#F2F0EF',
+                        'yacht-gray': '#BBBDBC',
+                        'yacht-teal': '#245F73',
+                        'yacht-brown': '#733E24',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    
+    {% block extra_css %}{% endblock %}
+</head>
+<body class="bg-yacht-white text-gray-800 font-sans">
+    <div id="app">
+        {% block content %}{% endblock %}
+        
+        {% if show_bottom_nav %}
+        <nav class="fixed bottom-0 left-0 right-0 bg-yacht-white border-t border-yacht-gray/30 h-14 flex items-center justify-around z-50 shadow-sm">
+            <a href="{{ url_for('main.map') }}" class="flex flex-col items-center justify-center w-1/4 h-full {% if active_tab == 'map' %}text-yacht-teal{% else %}text-yacht-gray{% endif %}">
+                <span class="material-icons text-xl">map</span>
+                <span class="text-xs mt-1">Map</span>
+                {% if active_tab == 'map' %}
+                <div class="absolute bottom-0 w-8 h-1 bg-yacht-teal rounded-t-md"></div>
+                {% endif %}
+            </a>
+            <a href="{{ url_for('main.dashboard') }}" class="flex flex-col items-center justify-center w-1/4 h-full {% if active_tab == 'dashboard' %}text-yacht-teal{% else %}text-yacht-gray{% endif %}">
+                <span class="material-icons text-xl">dashboard</span>
+                <span class="text-xs mt-1">Dashboard</span>
+                {% if active_tab == 'dashboard' %}
+                <div class="absolute bottom-0 w-8 h-1 bg-yacht-teal rounded-t-md"></div>
+                {% endif %}
+            </a>
+            <a href="{{ url_for('main.notifications') }}" class="flex flex-col items-center justify-center w-1/4 h-full {% if active_tab == 'notifications' %}text-yacht-teal{% else %}text-yacht-gray{% endif %}">
+                <span class="material-icons text-xl">notifications</span>
+                <span class="text-xs mt-1">Notifications</span>
+                {% if active_tab == 'notifications' %}
+                <div class="absolute bottom-0 w-8 h-1 bg-yacht-teal rounded-t-md"></div>
+                {% endif %}
+            </a>
+            <a href="{{ url_for('main.profile') }}" class="flex flex-col items-center justify-center w-1/4 h-full {% if active_tab == 'profile' %}text-yacht-teal{% else %}text-yacht-gray{% endif %}">
+                <span class="material-icons text-xl">person</span>
+                <span class="text-xs mt-1">Profile</span>
+                {% if active_tab == 'profile' %}
+                <div class="absolute bottom-0 w-8 h-1 bg-yacht-teal rounded-t-md"></div>
+                {% endif %}
+            </a>
+        </nav>
+        {% endif %}
+    </div>
+    
+    <!-- Flash Messages -->
+    <div id="flash-messages" class="fixed top-4 inset-x-0 z-50 flex flex-col items-center space-y-2">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash-message px-4 py-3 rounded-lg shadow-md {% if category == 'error' %}bg-red-500 text-white{% elif category == 'success' %}bg-green-500 text-white{% else %}bg-yacht-teal text-yacht-white{% endif %}">
+                        {{ message }}
+                        <button class="ml-2" onclick="this.parentNode.remove()">
+                            <span class="material-icons text-sm">close</span>
+                        </button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+    
+    <!-- JavaScript -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
