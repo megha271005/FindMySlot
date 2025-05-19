@@ -19,12 +19,14 @@ function Router() {
 }
 
 function App() {
-  // Load custom styles for parking app
+  // Load custom yacht club palette for parking app
   useEffect(() => {
-    document.documentElement.style.setProperty('--primary', '207 90% 54%');
-    document.documentElement.style.setProperty('--primary-foreground', '211 100% 99%');
-    document.documentElement.style.setProperty('--secondary', '25 100% 62%');
-    document.documentElement.style.setProperty('--secondary-foreground', '0 0% 100%');
+    document.documentElement.style.setProperty('--primary', '200 52% 30%'); // #245F73 (teal)
+    document.documentElement.style.setProperty('--primary-foreground', '34 6% 95%'); // #F2F0EF (off-white)
+    document.documentElement.style.setProperty('--secondary', '19 54% 30%'); // #733E24 (brown)
+    document.documentElement.style.setProperty('--secondary-foreground', '34 6% 95%'); // #F2F0EF (off-white)
+    document.documentElement.style.setProperty('--background', '34 6% 95%'); // #F2F0EF (off-white)
+    document.documentElement.style.setProperty('--muted', '220 2% 74%'); // #BBBDBC (light-gray)
   }, []);
 
   return (

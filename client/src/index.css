@@ -3,6 +3,55 @@
 @tailwind utilities;
 
 :root {
+  /* Yacht Club color palette */
+  --off-white: #F2F0EF;
+  --light-gray: #BBBDBC;
+  --teal: #245F73;
+  --brown: #733E24;
+}
+
+/* Custom color variables */
+.bg-yacht-white {
+  background-color: var(--off-white);
+}
+
+.bg-yacht-gray {
+  background-color: var(--light-gray);
+}
+
+.bg-yacht-teal {
+  background-color: var(--teal);
+}
+
+.bg-yacht-brown {
+  background-color: var(--brown);
+}
+
+.text-yacht-white {
+  color: var(--off-white);
+}
+
+.text-yacht-gray {
+  color: var(--light-gray);
+}
+
+.text-yacht-teal {
+  color: var(--teal);
+}
+
+.text-yacht-brown {
+  color: var(--brown);
+}
+
+.border-yacht-teal {
+  border-color: var(--teal);
+}
+
+.border-yacht-brown {
+  border-color: var(--brown);
+}
+
+:root {
       --background: 0 0% 100%;
 --foreground: 20 14.3% 4.1%;
 --muted: 60 4.8% 95.9%;

@@ -46,17 +46,23 @@ const BottomNavigation = ({ activeScreen, onChange }: BottomNavigationProps) => 
   };
   
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-input h-14 flex items-center justify-around z-50">
+    <div className="fixed bottom-0 left-0 right-0 bg-yacht-white border-t border-yacht-gray/30 h-14 flex items-center justify-around z-50 shadow-sm">
       {navItems.map((item) => (
         <button
           key={item.id}
           className={`flex flex-col items-center justify-center w-1/4 h-full ${
-            activeScreen === item.id ? "text-primary" : "text-muted-foreground"
+            activeScreen === item.id 
+              ? "text-yacht-teal" 
+              : "text-yacht-gray"
           }`}
           onClick={item.id === "profile-screen" ? handleProfileClick : () => onChange(item.id)}
         >
           <span className="material-icons text-xl">{item.icon}</span>
           <span className="text-xs mt-1">{item.label}</span>
+          
+          {activeScreen === item.id && (
+            <div className="absolute bottom-0 w-8 h-1 bg-yacht-teal rounded-t-md"></div>
+          )}
         </button>
       ))}
     </div>

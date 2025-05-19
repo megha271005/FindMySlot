@@ -110,9 +110,9 @@ const PaymentScreen = () => {
   };
   
   return (
-    <div className="fixed inset-0 bg-white z-40">
+    <div className="fixed inset-0 bg-yacht-white z-40">
       {/* Header */}
-      <div className="bg-primary text-white p-4 flex items-center">
+      <div className="bg-yacht-teal text-yacht-white p-4 flex items-center">
         <button className="mr-2" onClick={handleBackClick}>
           <span className="material-icons">arrow_back</span>
         </button>
@@ -121,39 +121,58 @@ const PaymentScreen = () => {
       
       {/* Payment Summary */}
       <div className="p-4 overflow-auto h-[calc(100vh-56px)] pb-16">
-        <Card className="mb-6">
+        <Card className="mb-6 border-yacht-gray/20">
           <CardContent className="p-4">
-            <h3 className="font-medium mb-3">Booking Summary</h3>
+            <h3 className="font-medium mb-3 text-yacht-teal">Booking Summary</h3>
             <div className="flex justify-between mb-2">
-              <span className="text-muted-foreground">Location</span>
-              <span className="font-medium">{locationData?.location?.name}</span>
+              <span className="text-yacht-gray">Location</span>
+              <span className="font-medium text-yacht-teal">{locationData?.location?.name}</span>
             </div>
             <div className="flex justify-between mb-2">
-              <span className="text-muted-foreground">Duration</span>
+              <span className="text-yacht-gray">Duration</span>
               <span className="font-medium">{getDurationText(currentBooking.duration)}</span>
             </div>
             <div className="flex justify-between mb-2">
-              <span className="text-muted-foreground">Booking Date</span>
+              <span className="text-yacht-gray">Booking Date</span>
               <span className="font-medium">{startDate} - {endDate}</span>
             </div>
-            <div className="border-t border-input my-3"></div>
+            {currentBooking.vehicleType && (
+              <div className="flex justify-between mb-2">
+                <span className="text-yacht-gray">Vehicle Type</span>
+                <span className="font-medium">
+                  {currentBooking.vehicleType === 'two-wheeler' ? '2-Wheeler' : '4-Wheeler'}
+                </span>
+              </div>
+            )}
+            <div className="border-t border-yacht-gray/20 my-3"></div>
             <div className="flex justify-between font-medium">
-              <span>Total Amount</span>
-              <span className="text-primary">₹{(currentBooking.amount / 100).toFixed(2)}</span>
+              <span className="text-yacht-teal">Total Amount</span>
+              <span className="text-yacht-brown">₹{(currentBooking.amount / 100).toFixed(2)}</span>
             </div>
           </CardContent>
         </Card>
         
         {/* Payment Methods */}
-        <h3 className="font-medium mb-3">Select Payment Method</h3>
+        <h3 className="font-medium mb-3 text-yacht-teal">Select Payment Method</h3>
         <RadioGroup value={paymentMethod} onValueChange={setPaymentMethod} className="space-y-3 mb-6">
           {PaymentMethods.map((method) => (
-            <div key={method.id} className="border border-input rounded-lg p-3 flex items-center justify-between">
+            <div 
+              key={method.id} 
+              className={`border rounded-lg p-3 flex items-center justify-between ${
+                paymentMethod === method.id ? 'border-yacht-teal bg-yacht-teal/5' : 'border-yacht-gray/30'
+              }`}
+            >
               <div className="flex items-center">
-                <span className="material-icons text-primary mr-3">{method.icon}</span>
-                <span>{method.name}</span>
+                <span className={`material-icons mr-3 ${
+                  paymentMethod === method.id ? 'text-yacht-teal' : 'text-yacht-gray'
+                }`}>
+                  {method.icon}
+                </span>
+                <span className={paymentMethod === method.id ? 'text-yacht-teal' : ''}>
+                  {method.name}
+                </span>
               </div>
-              <RadioGroupItem value={method.id} id={method.id} />
+              <RadioGroupItem value={method.id} id={method.id} className="border-yacht-teal" />
             </div>
           ))}
         </RadioGroup>
@@ -162,48 +181,52 @@ const PaymentScreen = () => {
         {paymentMethod === "card" && (
           <div className="mb-6">
             <div className="mb-4">
-              <Label htmlFor="card-number">Card Number</Label>
+              <Label htmlFor="card-number" className="text-yacht-teal">Card Number</Label>
               <Input
                 id="card-number"
                 placeholder="1234 5678 9012 3456"
                 value={cardDetails.cardNumber}
                 onChange={(e) => setCardDetails({ ...cardDetails, cardNumber: e.target.value })}
+                className="border-yacht-gray/30 focus-visible:ring-yacht-teal"
               />
             </div>
             <div className="flex gap-4 mb-4">
               <div className="flex-1">
-                <Label htmlFor="expiry-date">Expiry Date</Label>
+                <Label htmlFor="expiry-date" className="text-yacht-teal">Expiry Date</Label>
                 <Input
                   id="expiry-date"
                   placeholder="MM/YY"
                   value={cardDetails.expiryDate}
                   onChange={(e) => setCardDetails({ ...cardDetails, expiryDate: e.target.value })}
+                  className="border-yacht-gray/30 focus-visible:ring-yacht-teal"
                 />
               </div>
               <div className="flex-1">
-                <Label htmlFor="cvv">CVV</Label>
+                <Label htmlFor="cvv" className="text-yacht-teal">CVV</Label>
                 <Input
                   id="cvv"
                   placeholder="123"
                   value={cardDetails.cvv}
                   onChange={(e) => setCardDetails({ ...cardDetails, cvv: e.target.value })}
+                  className="border-yacht-gray/30 focus-visible:ring-yacht-teal"
                 />
               </div>
             </div>
             <div className="mb-4">
-              <Label htmlFor="name">Name on Card</Label>
+              <Label htmlFor="name" className="text-yacht-teal">Name on Card</Label>
               <Input
                 id="name"
                 placeholder="John Doe"
                 value={cardDetails.name}
                 onChange={(e) => setCardDetails({ ...cardDetails, name: e.target.value })}
+                className="border-yacht-gray/30 focus-visible:ring-yacht-teal"
               />
             </div>
           </div>
         )}
         
         <Button 
-          className="w-full"
+          className="w-full bg-yacht-teal hover:bg-yacht-teal/90 text-yacht-white"
           onClick={handlePayment}
           disabled={paymentMutation.isPending}
         >
@@ -211,8 +234,8 @@ const PaymentScreen = () => {
         </Button>
         
         <div className="flex justify-center items-center mt-4">
-          <span className="material-icons text-muted-foreground text-sm mr-2">lock</span>
-          <span className="text-xs text-muted-foreground">Secure payment powered by Razorpay</span>
+          <span className="material-icons text-yacht-gray text-sm mr-2">lock</span>
+          <span className="text-xs text-yacht-gray">Secure payment powered by Razorpay</span>
         </div>
       </div>
     </div>
